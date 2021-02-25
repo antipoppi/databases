@@ -1,0 +1,100 @@
+#1 "Luo aluksi asianmukainen tietokantapohja Ocelot-tietokannalle. Tietokannan tulee sisältää seuraavat dokumenttivarastot:
+	- EMPS
+	- DEPT"
+	
+	db.DEPT.insert(
+		{
+		 dept: "A",
+		 Manager: "Jack Bauer",
+		 Duty: "Accounting",
+		 Budget: 1000000000.00
+		}
+	)
+
+	db.EMPS.insert(
+		{
+		 empnum: 100,
+		 dept: "A",
+		 surname: "Bauer",
+		 gname: "Jack",
+		 address: "Destructionroad",
+		 city: "Los Angeles",
+		 prov: "California",
+		 pc: "TFKGLEG",
+		 phone: "+35812345",
+		 rate: 16.00,
+		 taxcode: 8.11,
+		 deduction: 5.12
+		}
+	)
+
+#2 "Lisää jokaiseen kolmeen dokumenttivarastoon vähintään viisi riviä dataa."
+Käytin seuraavaa for-loopia generoimaan 20 työntekijää, joiden tietoja muutin tarvittaessa eriksi. (osasto, rate-arvo jne).
+Tein alunperinkin ensimmäisessä tehtävässä vaaditut DEPT ja EMPS kokoelmat, en kokenut tarpeelliseksi tehdä puuttuvaa SDEPT-kokoelmaa)
+
+DEPT-kokoelmaan luotiin dataa seuraavalla for-loopilla:
+
+	for (var i = 1; i <= 5; i++) {
+			db.EMPS.insert( 
+			{   dept : i, 
+				manager : i, 
+				duty : i, 
+				budget : i, 
+			} )
+		}
+
+EMPS-kokoelmaan luotiin dataa seuraavalla for-loopilla:
+
+	for (var i = 1; i <= 20; i++) {
+		db.EMPS.insert( 
+		{   empnum : i, 
+			dept : i, 
+			surname : i, 
+			gname : i, 
+			address : i, 
+			city : i, 
+			prov : i, 
+			pc : i, 
+			phone : i, 
+			rate : i, 
+			taxcode : i,
+			deduction : i,
+		} )
+	}
+
+#3: "Muodosta seuraavat haut dokumenttivarastoon:"
+
+	1. "Hae kaikki osastotiedot."
+		En ihan ymmärtänyt pitikö tässä etsiä kaikki osastot vai DEPT-kokoelman tiedot
+		kaikki osastot:
+		db.DEPT.find(
+		   { },
+		   { dept: 1}
+		)
+
+		kaikki dept-kokoelman tiedot:
+		db.DEPT.find()
+		
+	2. "Hae kaikki työntekijät, joiden rate-arvo on suurempi kuin 9. Lajittele tulokset siten, että pienin arvo esitetään ensin."
+		db.EMPS.find( { rate: { $gt: 9 } } )
+
+	3. "Hae työntekijät, joiden rate-arvo on välillä 8-12. Lajittele tulokset siten, että suurin arvo esitetään ensin."
+		db.EMPS.find( { rate: { $gt: 8, $lt: 12 } } ).sort( { $natural: -1 } )
+		
+	4. "Hae työntekijät, joiden osasto ei ole A, B tai C."
+		db.EMPS.find( { dept: { $nin: [ "A", "B", "C" ] } } )
+		
+	5. "Päivitä työntekijöiden rate-arvoksi 10, joiden osasto on B."
+		db.EMPS.updateMany(
+		  { dept: "B" },
+		  { $set: { rate: 10.00 } }
+		)
+
+	6. "Muuta osaston C manageriksi "David Smith"."
+		db.DEPT.update(
+		  { dept: "C" },
+		  { $set: { manager: "David Smith" } }
+		)
+		
+	7. "Poista työntekijät, joiden osasto on C."
+		db.EMPS.deleteMany( { dept : "C" } )

@@ -1,0 +1,13 @@
+#Tässä esimerkkikomentoja joilla tietokantaa voidaan käyttää
+
+-- Ostetaan esimerkiksi tuotetta jonka id on 6 yhteensä 2 kappaletta
+INSERT INTO OSTOTAPAHTUMA (TUOTEID, MÄÄRÄ) VALUES (6,2);​
+
+-- Vastaavasti kyseistä tuotetta myydään komennolla
+INSERT INTO MYYNTITAPAHTUMA(TUOTEID, MÄÄRÄ) VALUES (6,2);​
+
+-- Etsitään tiedot MAN-automerkin nokka-akselista​
+SELECT * FROM TUOTE WHERE AUTOMERKKI='MAN' AND OSA='nokka-akseli’;​
+
+-- Tarkastetaan montako kyseistä nokka-akselia löytyy varastosta​
+SELECT * FROM VARASTO WHERE TUOTEID = 86;​
